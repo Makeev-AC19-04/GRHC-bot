@@ -1,6 +1,6 @@
 import telebot
 
-token = '5589670914:AAGZFaTykB0AelTJFO1T0v63WdAlF-ylMt4' #git check
+token = '5589670914:AAGZFaTykB0AelTJFO1T0v63WdAlF-ylMt4' #git  heck
 
 bot = telebot.TeleBot(token)
 
