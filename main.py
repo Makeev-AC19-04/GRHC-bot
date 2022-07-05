@@ -11,19 +11,24 @@ class Response: # Класс посылаемого ботом сообщени�
     def __init__(self, text, keyboard, upperLayer):
         self.text = text  # Определяем текст сообщения
         self.keyboard = keyboard # Загружаем нужную клавиатуру
-        self.isUsing = False # Переменная для загрузки нужного меню
-        self.upperLayer = upperLayer
+        self.upperLayer = upperLayer # Предыдущий пункт меню
 
-menuResponse = Response('Главное меню', keyboards.mainMenu, None)
+menuResponse = Response('Главное меню', keyboards.mainMenu, None) # Ответы бота
 vacanciesResponse = Response('Поиск вакансий: ', keyboards.vacanciesMenu, 'главное меню')
 resumeResponse = Response('Меню резюме', keyboards.resumeMenu, 'главное меню')
 aboutResponse = Response('Информация о компании: ', keyboards.aboutMenu, 'главное меню')
+searchByResumeResponse = Response('Выберите резюме: ', keyboards.searchByResumeMenu, 'вакансии')
+filtersReponse = Response('Фильтры: ', keyboards.filtersMenu, 'вакансии')
+createResumeResponse = Response('Заполнение резюме', keyboards.createResumeMenu, 'мои резюме')
 
 responses = { #Словарь ответов
     'главное меню': menuResponse,
-    'вакансии': vacanciesResponse,
-    'мои резюме': resumeResponse,
-    'о компании': aboutResponse
+        'вакансии': vacanciesResponse,
+            'по моему резюме': searchByResumeResponse,
+            'фильтры': filtersReponse,
+        'мои резюме': resumeResponse,
+            'создать': createResumeResponse,
+        'о компании': aboutResponse
 }
 
 def DBadd(message):
@@ -61,23 +66,20 @@ def welcome(message):
 
 @bot.message_handler(commands=['menu'])
 def LoadMenu(message):
-    for i in responses:
-        responses[i].isUsing = False
     bot.send_message(message.chat.id, 'Главное меню', reply_markup=mainMenu)
+
+currentMenu='' # Переменная, отвечающая за выбор нужной клавиатуры
 
 @bot.message_handler(content_types=['text'])
 def message_handler(message):
+    global currentMenu
     key = message.text.lower()
     if key == 'назад':
-        for i in responses:
-            if responses[i].isUsing == True:
-                responses[i].isUsing = False
-                responses[responses[i].upperLayer].isUsing = True
-                bot.send_message(message.chat.id,  responses[responses[i].upperLayer].text, reply_markup=responses[responses[i].upperLayer].keyboard)
+        currentMenu = responses[currentMenu].upperLayer
+        bot.send_message(message.chat.id,  responses[currentMenu].text, reply_markup=responses[currentMenu].keyboard)
     elif key in responses: # Если сообщение содержит ключ из словаря ответов, то отправляем ответ, соответствующий ключу
-        bot.send_message(message.chat.id, responses[key].text, reply_markup=responses[key].keyboard)
-        responses[responses[key].upperLayer].isUsing = False
-        responses[key].isUsing = True
+        currentMenu = key
+        bot.send_message(message.chat.id, responses[currentMenu].text, reply_markup=responses[key].keyboard)
     else:
         bot.send_message(message.chat.id, 'Я тебя не понял, введи /menu чтобы вернуться в главное меню')
 
