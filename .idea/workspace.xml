@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="61425ce3-d4b3-40e7-9a5f-9ae573a733fd" name="Changes" comment="Основы навигации, клавиатуры в отдельном файле">
+    <list default="true" id="61425ce3-d4b3-40e7-9a5f-9ae573a733fd" name="Changes" comment="Более менее полноценное меню">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keyboards.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboards.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +86,8 @@
       <workItem from="1656597378729" duration="433000" />
       <workItem from="1656597830783" duration="4598000" />
       <workItem from="1656931049093" duration="5178000" />
-      <workItem from="1657010031097" duration="10251000" />
+      <workItem from="1657010031097" duration="10346000" />
+      <workItem from="1657097060839" duration="13317000" />
     </task>
     <task id="LOCAL-00001" summary="Создал бота, привязал токен, повторение сообщений">
       <created>1656596642767</created>
@@ -180,7 +180,21 @@
       <option name="project" value="LOCAL" />
       <updated>1657015539265</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Более менее полноценное меню">
+      <created>1657035067230</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1657035067230</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Более менее полноценное меню">
+      <created>1657035089502</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1657035089502</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,9 +217,11 @@
     <MESSAGE value="Приветственное сообщение, клавиатура" />
     <MESSAGE value="Примитивная работа с БД: просмотр и добавление записей" />
     <MESSAGE value="Основы навигации, клавиатуры в отдельном файле" />
-    <option name="LAST_COMMIT_MESSAGE" value="Основы навигации, клавиатуры в отдельном файле" />
+    <MESSAGE value="Практически полноценное меню" />
+    <MESSAGE value="Более менее полноценное меню" />
+    <option name="LAST_COMMIT_MESSAGE" value="Более менее полноценное меню" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/GRHC_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1657035000305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/GRHC_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1657119167305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

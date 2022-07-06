@@ -1,5 +1,5 @@
 import telebot
-from mysql.connector import  connect, Error
+from mysql.connector import connect, Error
 
 import keyboards
 from keyboards import *
@@ -8,27 +8,55 @@ token = '5589670914:AAGZFaTykB0AelTJFO1T0v63WdAlF-ylMt4' #токен бота
 bot = telebot.TeleBot(token)
 
 class Response: # Класс посылаемого ботом сообщения
-    def __init__(self, text, keyboard, upperLayer):
+    def __init__(self, text, keyboard, upperLayer, func):
         self.text = text  # Определяем текст сообщения
         self.keyboard = keyboard # Загружаем нужную клавиатуру
         self.upperLayer = upperLayer # Предыдущий пункт меню
+        self.func = func
 
-menuResponse = Response('Главное меню', keyboards.mainMenu, None) # Ответы бота
-vacanciesResponse = Response('Поиск вакансий: ', keyboards.vacanciesMenu, 'главное меню')
-resumeResponse = Response('Меню резюме', keyboards.resumeMenu, 'главное меню')
-aboutResponse = Response('Информация о компании: ', keyboards.aboutMenu, 'главное меню')
-searchByResumeResponse = Response('Выберите резюме: ', keyboards.searchByResumeMenu, 'вакансии')
-filtersReponse = Response('Фильтры: ', keyboards.filtersMenu, 'вакансии')
-createResumeResponse = Response('Заполнение резюме', keyboards.createResumeMenu, 'мои резюме')
+class SearchFilters: # Класс для хранения параметров поиска
+    def __init__(self):
+        self.keywords = []
+        isSearching = False
+        enteringKeywords = False
+        pass
+    def setKeywords(self, keywords):
+        self.keywords = keywords
 
-responses = { #Словарь ответов
-    'главное меню': menuResponse,
+class CurrentMenu():
+    def __init__(self):
+        self.key = 'главное меню'
+currentMenu = CurrentMenu()
+
+searchFilters=SearchFilters()
+
+def Pass(key): # Функция смены меню
+    global currentMenu
+    if key == 'назад':
+        currentMenu.key = menuResponses[currentMenu.key].upperLayer
+    else:
+        currentMenu.key=key
+
+mainMenuResponse = Response('Главное меню', keyboards.mainMenu, None, Pass) # Ответы бота
+vacanciesResponse = Response('Поиск вакансий: ', keyboards.vacanciesMenu, 'главное меню', Pass)
+resumeResponse = Response('Меню резюме', keyboards.resumeMenu, 'главное меню', Pass)
+aboutResponse = Response('Информация о компании: ', keyboards.aboutMenu, 'главное меню', Pass)
+searchByResumeResponse = Response('Выберите резюме: ', keyboards.searchByResumeMenu, 'вакансии', Pass)
+filtersReponse = Response('Фильтры: ', keyboards.filtersMenu, 'вакансии', Pass)
+createResumeResponse = Response('Заполнение резюме', keyboards.createResumeMenu, 'мои резюме', Pass)
+keywordsResponse = Response('Введите ключевые слова для поиска', None, 'мои резюме', Pass)
+backResponse = Response('Назад', None, None, Pass)
+
+menuResponses = { #Словарь ответов
+    'главное меню': mainMenuResponse,
         'вакансии': vacanciesResponse,
             'по моему резюме': searchByResumeResponse,
             'фильтры': filtersReponse,
+                'ключевые слова': keywordsResponse,
         'мои резюме': resumeResponse,
             'создать': createResumeResponse,
-        'о компании': aboutResponse
+        'о компании': aboutResponse,
+    'назад': backResponse
 }
 
 def DBadd(message):
@@ -68,18 +96,13 @@ def welcome(message):
 def LoadMenu(message):
     bot.send_message(message.chat.id, 'Главное меню', reply_markup=mainMenu)
 
-currentMenu='' # Переменная, отвечающая за выбор нужной клавиатуры
-
 @bot.message_handler(content_types=['text'])
 def message_handler(message):
     global currentMenu
     key = message.text.lower()
-    if key == 'назад':
-        currentMenu = responses[currentMenu].upperLayer
-        bot.send_message(message.chat.id,  responses[currentMenu].text, reply_markup=responses[currentMenu].keyboard)
-    elif key in responses: # Если сообщение содержит ключ из словаря ответов, то отправляем ответ, соответствующий ключу
-        currentMenu = key
-        bot.send_message(message.chat.id, responses[currentMenu].text, reply_markup=responses[key].keyboard)
+    if key in menuResponses: # Если сообщение содержит ключ из словаря ответов, то отправляем ответ, соответствующий ключу
+        menuResponses[currentMenu.key].func(key)
+        bot.send_message(message.chat.id, menuResponses[currentMenu.key].text, reply_markup=menuResponses[currentMenu.key].keyboard)
     else:
         bot.send_message(message.chat.id, 'Я тебя не понял, введи /menu чтобы вернуться в главное меню')
 
